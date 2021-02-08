@@ -61,12 +61,19 @@ public class PaymentController {
         for (String service : services) {
             log.info("==element==" + service);
         }
+//        获取某服务下的所有实例
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
 
         for (ServiceInstance instance : instances) {
-            log.info("==instance==",instance.getHost(),instance.getInstanceId(),instance.getServiceId());
+            log.info("==instance=={},{},{}",instance.getHost(),instance.getInstanceId(),instance.getServiceId());
         }
+        log.info(instances.toString());
         return discoveryClient;
+    }
+
+    @GetMapping("/lb")
+    public String getPaymentLB() {
+        return SERVER_PORT;
     }
 
 

@@ -4,6 +4,7 @@ import com.yango.springcloud.entities.CommonResult;
 import com.yango.springcloud.entities.Payment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,12 +32,22 @@ public class OrderController {
 
     @GetMapping("/payment/create")
     public CommonResult<Payment> create(@RequestBody Payment payment) {
-        return template.postForObject(PAYMENT_URL + "/payment/create", payment, CommonResult.class);
+//        return template.postForObject(PAYMENT_URL + "/payment/create", payment, CommonResult.class);
+        return template.postForEntity(PAYMENT_URL + "/payment/create", payment, CommonResult.class).getBody();
     }
 
     @GetMapping("/payment/get/{id}")
     public CommonResult<Payment> getPayment(@PathVariable("id") Long id) {
         return template.getForObject(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+    }
+
+    @GetMapping("/payment/getForEntity/{id}")
+    public CommonResult<Payment> getForEntity(@PathVariable("id") Long id) {
+        ResponseEntity<CommonResult> forEntity = template.getForEntity(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+        if (forEntity.getStatusCode().is2xxSuccessful()) {
+            return forEntity.getBody();
+        }
+        return new CommonResult<>(444, "操作失败");
     }
 
 
