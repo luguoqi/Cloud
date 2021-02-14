@@ -7,3 +7,7 @@ eureka:
     register-with-eureka: false
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka/ #入驻地址 不集群
+#启用hytrix断路器
+feign:
+  hystrix:
+    enabled: true
