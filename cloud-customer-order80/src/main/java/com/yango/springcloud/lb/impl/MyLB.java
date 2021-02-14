@@ -17,10 +17,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class MyLB implements ILoadBalancer {
 
+
     private AtomicInteger nextServerCyclicCounter;
 
     private AtomicInteger atomicInteger = new AtomicInteger(0);
 
+    //获取访问次数
     public final int getAndIncrement() {
         int current;
         int next;
@@ -28,12 +30,14 @@ public class MyLB implements ILoadBalancer {
             current = this.atomicInteger.get();
             next = current >= Integer.MAX_VALUE ? 0 : current + 1;
         } while (!this.atomicInteger.compareAndSet(current, next));
-        System.out.println(next);
+        System.out.println("======第几次访问 next=======" + next);
         return next;
     }
 
     @Override
     public ServiceInstance instance(List<ServiceInstance> serviceInstances) {
-        return null;
+        //获取第几次访问与服务集群刷量的取模，得到实际调用服务的下标
+        int index = getAndIncrement() % serviceInstances.size();
+        return serviceInstances.get(index);
     }
 }

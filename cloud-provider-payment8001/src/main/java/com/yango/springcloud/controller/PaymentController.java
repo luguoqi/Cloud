@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -55,6 +56,9 @@ public class PaymentController {
         }
     }
 
+    /**
+     *测试服务发现
+     */
     @GetMapping("/discovery")
     public Object discovery() {
         List<String> services = discoveryClient.getServices();
@@ -71,10 +75,25 @@ public class PaymentController {
         return discoveryClient;
     }
 
+    /**
+     *测试负载均衡
+     */
     @GetMapping("/lb")
     public String getPaymentLB() {
         return SERVER_PORT;
     }
 
+    /**
+     *测试feign超时
+     */
+    @GetMapping("/feign/timeout")
+    public String paymentFeignTimeout() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return SERVER_PORT;
+    }
 
 }
