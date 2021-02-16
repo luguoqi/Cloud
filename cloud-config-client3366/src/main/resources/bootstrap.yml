@@ -1,17 +1,14 @@
 server:
-  port: 3344
-
+  port: 3366
 spring:
   application:
-    name: cloud-config-center
+    name: config-client
   cloud:
     config:
-      server:
-        git:
-          uri: git@github.com:luguoqi/springcloud-config.git #github上面的git仓库名
-          search-paths: #搜索目录
-            - springcloud-config
-      label: master #读取分支
+      label: master #分支名称
+      name: config # 配置文件名称
+      profile: dev #读取后缀名称
+      uri: http://localhost:3344 #配置中心地址
 #      ribbitmq相关配置 15672是Web管理界面的端口，5672是MQ访问的端口
   rabbitmq:
     host: localhost
@@ -19,13 +16,14 @@ spring:
     username: guest
     password: guest
 
-
 eureka:
   client:
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka
+
+#暴露监控端点
 management:
   endpoints:
     web:
       exposure:
-        include: "bus-refresh"
+        include: "*"
