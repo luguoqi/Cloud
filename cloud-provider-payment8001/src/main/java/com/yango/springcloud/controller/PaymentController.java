@@ -96,4 +96,12 @@ public class PaymentController {
         return SERVER_PORT;
     }
 
+    /**
+     * 测试链路追踪
+     */
+    @GetMapping("/zipkin")
+    public String paymentZipkin() {
+        return "zipkin 请求成功";
+    }
+
 }
