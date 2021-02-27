@@ -1,0 +1,6 @@
+spring:
+  profiles:
+#    active: test
+#    active: dev
+    active: info
+#这个配置与bootstrap.yml配置的内容拼起来 查找dev结尾的配置
